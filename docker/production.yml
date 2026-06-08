@@ -17,6 +17,7 @@ services:
       - "traefik.http.routers.riga-weather.middlewares=riga-weather-ratelimit"
     networks:
       - riga_weather
+      - proxy
     restart: unless-stopped
     env_file: ../stack.env
 
@@ -29,3 +30,5 @@ services:
 
 networks:
   riga_weather:
+  proxy:
+    external: true
