@@ -54,7 +54,7 @@ func init() {
 }
 
 func failRequest(w http.ResponseWriter, r *http.Request, status int, why string) {
-	logger.Info("request failed", "request", r, "status", status, "error", why)
+	logger.Info("request failed", "status", status, "error", why)
 	w.WriteHeader(status)
 	w.Write([]byte(why))
 }
