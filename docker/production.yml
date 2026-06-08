@@ -18,6 +18,7 @@ services:
     networks:
       - riga_weather
     restart: unless-stopped
+    env_file: ../stack.env
 
   redis:
     image: redis:latest
