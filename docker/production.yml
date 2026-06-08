@@ -1,0 +1,30 @@
+services:
+  api:
+    build: .
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.average=20"
+      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.period=1s"
+      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.burst=30"
+
+      - "traefik.http.routers.riga-weather.rule=Host(`riga-weather.natix.dev`)"
+      - "traefik.http.routers.riga-weather.tls=true"
+      - "traefik.http.routers.riga-weather.tls.certresolver=le"
+      - "traefik.http.routers.riga-weather.entrypoints=websecure"
+      - "traefik.http.routers.riga-weather.service=riga-weather"
+      - "traefik.http.routers.riga-weather.loadbalancer.server.port=8080"
+      - "traefik.http.routers.riga-weather.middlewares=riga-weather-ratelimit"
+    networks:
+      - riga_weather
+    restart: unless-stopped
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: "redis_riga_weather"
+    networks:
+      - riga_weather
+
+networks:
+  riga_weather:
