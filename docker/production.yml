@@ -1,20 +1,9 @@
 services:
   api:
+    container_name: riga-weather
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.average=20"
-      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.period=1s"
-      - "traefik.http.middlewares.riga-weather-ratelimit.ratelimit.burst=30"
-      - "traefik.http.routers.riga-weather.rule=Host(`riga-weather.natix.dev`)"
-      - "traefik.http.routers.riga-weather.tls=true"
-      - "traefik.http.routers.riga-weather.tls.certresolver=le"
-      - "traefik.http.routers.riga-weather.entrypoints=websecure"
-      - "traefik.http.routers.riga-weather.service=riga-weather"
-      - "traefik.http.services.riga-weather.loadbalancer.server.port=8080"
-      - "traefik.http.routers.riga-weather.middlewares=riga-weather-ratelimit"
     networks:
       - riga_weather
       - proxy
